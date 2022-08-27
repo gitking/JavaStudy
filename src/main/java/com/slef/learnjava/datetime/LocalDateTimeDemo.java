@@ -20,7 +20,7 @@ import java.time.temporal.TemporalAdjusters;
  *  Week的范围用1~7表示周一到周日。
  *  最后，新API的类型几乎全部是不变类型（和String类似），可以放心使用不必担心被修改。
  *
- *  有的童鞋可能发现Java 8引入的java.timeAPI。怎么和一个开源的Joda Time很像？难道JDK也开始抄袭开源了？
+ *  有的童鞋可能发现Java 8引入的java.timeAPI。怎么和一个开源的Joda Time（https://www.joda.org/）很像？难道JDK也开始抄袭开源了？
  *  其实正是因为开源的Joda Time设计很好，应用广泛，所以JDK团队邀请Joda Time的作者Stephen Colebourne共同设计了java.timeAPI。
  *  Java 8引入了新的日期和时间API，它们是不变类，默认按ISO 8601标准格式化和解析；
  *  使用LocalDateTime可以非常方便地对日期和时间进行加减，或者调整日期和时间，它总是返回新对象；
@@ -37,6 +37,7 @@ public class LocalDateTimeDemo {
         System.out.println("严格按照ISO 8601格式打印" + d);
         System.out.println("严格按照ISO 8601格式打印" + t);
         System.out.println("严格按照ISO 8601格式打印" + dt);
+        System.out.println("严格按照ISO 8601格式打印，舍弃毫秒,注意打印出来的没有毫秒" + dt.withNano(0));
 
         /*
          * 上述代码其实有一个小问题，在获取3个类型的时候，由于执行一行代码总会消耗一点时间，
@@ -124,6 +125,27 @@ public class LocalDateTimeDemo {
         LocalDateTime firstDay = LocalDate.now().withDayOfMonth(1).atStartOfDay();
         System.out.println("本月第一天0:00时刻" + firstDay);
 
+        /**
+         * 看LocalTimetoString方法的源码：
+         * The format used will be the shortest that outputs the full value of the time where the omitted parts are implied to be zero.
+         * 使用的格式将是最短的输出时间的完整值，其中省略的部分被暗示为零。
+         * HH:mm
+         * HH:mm:ss
+         * HH:mm:ss.SSS
+         * HH:mm:ss.SSSSSS
+         * HH:mm:ss.SSSSSSSSS
+         * LocalTime是由小时和分钟和秒和纳秒组成的，仔细看LocalTime的toString方法就行了
+         */
+        System.out.println("使用的格式将是最短的输出时间的完整值，其中省略的部分被暗示为零。" + LocalTime.now().toString());
+        System.out.println("使用的格式将是最短的输出时间的完整值，其中省略的部分被暗示为零。" + LocalTime.now().toString());
+        String localTimeStr;
+//        while (true) {
+//            localTimeStr = LocalTime.now().toString();
+//            if (localTimeStr.length() > 12) {
+//                System.out.println("使用的格式将是最短的输出时间的完整值，其中省略的部分被暗示为零。这里好像获取不到纳秒" + LocalTime.now().toString());
+//                break;
+//            }
+//        }
         // 本月最后一天
         LocalDate lastDay = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         System.out.println("本月最后一天" + lastDay);
