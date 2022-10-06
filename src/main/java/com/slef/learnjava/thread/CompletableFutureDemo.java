@@ -114,7 +114,8 @@ public class CompletableFutureDemo {
          */
         List<CompletableFuture<PriceResultVO>> priceResultVOList1 = priceResultVOList.stream().map(priceResultVO -> {
             return CompletableFuture.supplyAsync(()->new PriceResultVO().getPrice(priceResultVO.getProductName(), priceResultVO.getSource()))
-                    .thenCombine(CompletableFuture.supplyAsync(()->new PriceResultVO().getDiscounts(priceResultVO.getProductName(), priceResultVO.getSource())), new PriceResultVO()::computeRealPrice);
+                    .thenCombine(CompletableFuture.supplyAsync(()->new PriceResultVO().getDiscounts(priceResultVO.getProductName(), priceResultVO.getSource())),
+                            new PriceResultVO()::computeRealPrice);
         }).collect(Collectors.toList());
 
         PriceResultVO priceResultVOSec = priceResultVOList1.stream().map(CompletableFuture::join).sorted(Comparator.comparing(PriceResultVO::getRealPrice)).findFirst().get();
