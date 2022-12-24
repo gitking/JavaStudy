@@ -2,6 +2,7 @@ package com.slef.learnjava.datetime;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
 /**
@@ -197,5 +198,8 @@ public class LocalDateTimeDemo {
         System.out.println("注意dr1转换成String的时候会自动变成:(PT10H) - >> " + dr1);
         Duration dr2 = Duration.parse("P1DT2H3M");
         System.out.println("注意dr2转换成String的时候会自动变成:(PT26H3M) - >> " + dr2);
+
+        long untilLong = LocalDate.now().until(LocalDate.now().plusDays(11), ChronoUnit.DAYS);
+        System.out.println("*******************until直到,LocalDate.now到目标日期需要多少天" + untilLong);
     }
 }

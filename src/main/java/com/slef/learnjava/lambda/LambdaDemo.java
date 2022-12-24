@@ -16,6 +16,12 @@ import java.util.stream.Collectors;
 /**
  * 你应该知道的Java8新特性之Lambda表达式 https://juejin.cn/post/7148334544755064846
  *
+ * 观察Lambda表达式的写法，它只需要写出方法定义：
+ * 其中，参数是(s1, s2)，参数类型可以省略，因为编译器可以自动推断出String类型。-> { ... }表示方法体，所有代码写在内部即可。Lambda表达式没有class定义，因此写法非常简洁
+ * 如果只有一行return xxx的代码，完全可以用更简单的写法：
+ * Arrays.sort(array, (s1, s2) -> s1.compareTo(s2));
+ *
+ * 返回值的类型也是由编译器自动推断的，这里推断出的返回值是int，因此，只要返回int，编译器就不会报错。
  * Lambda表达式是一个匿名函数，我们可以把 Lambda 表达式理解为是一段可以传递的代码（将代码 像数据一样进行传递）。
  * 可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使Java的语言表达能力得到了提升。
  *
@@ -67,13 +73,23 @@ public class LambdaDemo {
 
         // 语法格式一：无参，无返回值，Lambda体只需一条语句
         Runnable r2 = () -> {System.out.println("Test1");};
+        // 语法格式一：无参数，无返回值 https://www.liaoxuefeng.com/wiki/1252599548343744/1305158055100449#0
+        Runnable r3 = () -> System.out.println("Hello Lambda!");
 
         // 语法格式二：Lambda需要一个参数，并且无返回值
         Consumer<String> con2 = (String s) -> { System.out.println(s); };
         con2.accept("test2");
 
+        // 语法格式二：有一个参数，并且无返回值
+        Consumer<String> conLiao = (x) -> System.out.println(x);
+        conLiao.accept("我大尚硅谷威武！");
+
         Consumer<String> con22 = (s) ->  System.out.println(s);
         con22.accept("test22，注意这种呢写法把String参数类型省略了，但是小括号没省略()");
+
+        // 语法格式三：若只有一个参数，小括号可以省略不写
+        Consumer<String> conXue = x -> System.out.println(x);
+        conXue.accept("廖雪峰牛逼");
 
         // 语法格式三：Lambda只需要一个参数时，参数的小括号可以省略，同时省略参数变量类型（类型推断）
         Consumer<String> con3 = s -> {
@@ -85,10 +101,19 @@ public class LambdaDemo {
         Consumer<String> con33 = s -> System.out.println(s);
         con33.accept("大括号都可以省略了");
 
+        // 语法格式四：有两个以上的参数，有返回值，并且 Lambda 体中有多条语句
+        Comparator<Integer> comFeng = (x, y) -> {
+            System.out.println("函数式接口");
+            return Integer.compare(x, y);
+        };
+
         // 语法格式四：Lambda需要两个参数，并且有返回值
         Comparator<Integer> com2 = (Integer o1, Integer o2) -> {
             return o1.compareTo(o2);
         };
+        // 语法格式五：若 Lambda 体中只有一条语句， return 和 大括号都可以省略不写
+        Comparator<Integer> comLi = (x, y) -> Integer.compare(x, y);
+        System.out.println("语法格式五：若 Lambda 体中只有一条语句， return 和 大括号都可以省略不写" + comLi.compare(1, 2));
 
         // 语法格式五：当 Lambda 体只有一条语句时，return 与大括号可以省略
         Comparator<Integer> com3 = (Integer o1, Integer o2) -> o1.compareTo(o2);

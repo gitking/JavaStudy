@@ -35,7 +35,7 @@ public class Test1 {
         m.d(new Test1());
 
         MyInterSec myInterSec = Test1::b;
-        myInterSec.d(new Test1(), 1, 2);
+        myInterSec.d(new Test2(), 1, 2);
 
         MyInterThr myInterThr = Test1::b;
 
